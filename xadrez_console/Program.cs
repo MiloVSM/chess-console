@@ -7,7 +7,11 @@ namespace xadrez_console
     {
         static void Main(string[] args)
         {
-            Board board = new Board(8, 8);
+            // Testando o método que imprime o tabuleiro no console
+            Board chessBoard = new Board(8, 8);
+            Screen.PrintBoard(chessBoard);
+
+            Console.ReadLine();
         }
     }
 }

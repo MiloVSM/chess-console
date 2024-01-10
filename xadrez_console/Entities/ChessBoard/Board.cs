@@ -15,5 +15,10 @@
             Columns = columns;
             pieces = new ChessPiece[rows, columns];
         }
+
+        public ChessPiece GetPiece(int row, int column)
+        {
+            return pieces[row, column];
+        }
     }
 }
