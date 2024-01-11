@@ -46,6 +46,19 @@
             piece.Position = position;
         }
 
+        // Método para retirar a peça do tabuleiro
+        public Piece RemovePiece(Position position)
+        {
+            if (!PositionOccupied(position))
+            {
+                return null;
+            }
+            Piece aux = GetPiece(position);
+            aux.Position = null;
+            pieces[position.Row, position.Column] = null;
+            return aux;
+        }
+
         public bool PositionIsValid(Position position)
         {
             if (position.Row < 0 || position.Row > Rows || position.Column < 0 || position.Column >= Columns)

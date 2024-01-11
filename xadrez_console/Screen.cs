@@ -1,4 +1,5 @@
-﻿using GameBoard;
+﻿using Chess;
+using GameBoard;
 using System.Reflection.PortableExecutable;
 
 namespace xadrez_console
@@ -36,6 +37,17 @@ namespace xadrez_console
             Console.ForegroundColor = aux;
         }
 
+        // Lê o input do usuário e converte o string para coordenadas
+        public static ChessCoordinates ReadCoordinates()
+        {
+            string input = Console.ReadLine();
+            char column = input[0];
+            int row = int.Parse(input[1].ToString());
+            ChessCoordinates coords = new ChessCoordinates(column, row);
+            return coords;
+        }
+
+        // Testa se a peça é do lado preto ou branco e a exibe na cor especificada
         public static void PrintPiece(Piece piece)
         {
             if (piece.Color == Color.White)
