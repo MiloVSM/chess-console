@@ -28,8 +28,10 @@ namespace Chess
 
         public void InitializePieces()
         {
-            ChessBoard.PositionPiece(new Rook(ChessBoard, Color.White), new ChessCoordinates('c', 1).ToPosition());
-            
+            ChessBoard.PositionPiece(new King(ChessBoard, Color.Black), new ChessCoordinates('c', 7).ToPosition());
+            ChessBoard.PositionPiece(new King(ChessBoard, Color.White), new ChessCoordinates('c', 1).ToPosition());
+            ChessBoard.PositionPiece(new Rook(ChessBoard, Color.White), new ChessCoordinates('d', 4).ToPosition());
+
         }
 
 

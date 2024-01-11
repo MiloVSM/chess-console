@@ -11,23 +11,12 @@ namespace xadrez_console
         {
             for (int i = 0; i < board.Rows; i++)
             {
-                ConsoleColor aux1 = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(8 - i + " ");
-                Console.ForegroundColor = aux1;
 
                 for (int j = 0; j < board.Columns; j++)
                 {
-                    if (board.GetPiece(i, j) != null) 
-                    {
-                        PrintPiece(board.GetPiece(i, j));
-                        Console.Write(" ");
-                    }
-                    else
-                    {
-                        Console.Write("- ");
-                    }
-                    
+                    PrintPiece(board.GetPiece(i, j));
                 }
                 Console.WriteLine();
             }
@@ -35,6 +24,40 @@ namespace xadrez_console
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("  a b c d e f g h");
             Console.ForegroundColor = aux;
+        }
+
+        // Método de sobrecarga para visualizar as posições possíveis
+        public static void PrintBoard(Board board, bool[,] possiblePositions)
+        {
+            ConsoleColor bgColor = Console.BackgroundColor;
+            ConsoleColor previewColor = ConsoleColor.DarkGray;
+
+            for (int i = 0; i < board.Rows; i++)
+            {
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(8 - i + " ");
+
+                for (int j = 0; j < board.Columns; j++)
+                {
+                    if (possiblePositions[i, j])
+                    {
+                        Console.BackgroundColor = previewColor;
+                    }
+                    else
+                    {
+                        Console.BackgroundColor = bgColor;
+                    }
+                    PrintPiece(board.GetPiece(i, j));
+                    Console.BackgroundColor = bgColor;
+                }
+                Console.WriteLine();
+            }
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("  a b c d e f g h");
+            Console.ForegroundColor = aux;
+            Console.BackgroundColor = bgColor;
         }
 
         // Lê o input do usuário e converte o string para coordenadas
@@ -47,23 +70,26 @@ namespace xadrez_console
             return coords;
         }
 
-        // Testa se a peça é do lado preto ou branco e a exibe na cor especificada
+        // Testa se existe uma peça na posição e imprimi a peça na cor especificada de acordo com o lado
         public static void PrintPiece(Piece piece)
         {
-            if (piece.Color == Color.White)
+            // Lado Branco = player 1 // Lado Preto = player 2
+
+            ConsoleColor player1_color = ConsoleColor.Green;
+            ConsoleColor player2_color = ConsoleColor.DarkYellow;
+
+            if (piece == null)
             {
-                ConsoleColor aux = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(piece);
-                Console.ForegroundColor = aux;
+                Console.Write("- ");
+                return;
             }
-            else
-            {
-                ConsoleColor aux = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write(piece);
-                Console.ForegroundColor = aux;
-            }
+
+            ConsoleColor color = (piece.Color == Color.White) ? player1_color : player2_color;
+
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = color;
+            Console.Write(piece + " ");
+            Console.ForegroundColor = aux;
         }
     }
 }

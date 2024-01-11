@@ -8,6 +8,11 @@ namespace Chess
         {
         }
 
+        public override bool[,] PossibleMoves()
+        {
+            throw new NotImplementedException();
+        }
+
         public override string ToString()
         {
             return "R";

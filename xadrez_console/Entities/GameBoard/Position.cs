@@ -11,6 +11,13 @@
             Column = column;
         }
 
+        // Método auxiliar para manipular a matriz de movimentos possíveis nas classes de cada peça
+        public void DefineValues(int row, int column)
+        {
+            Row = row;
+            Column = column;
+        }
+
         public override string ToString()
         {
             return Row + ", " + Column;

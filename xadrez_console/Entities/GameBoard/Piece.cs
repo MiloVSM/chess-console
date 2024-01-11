@@ -1,6 +1,6 @@
 ﻿namespace GameBoard
 {
-    internal class Piece
+    abstract class Piece
     {
         public Position? Position { get; set; }
         public Color Color { get; protected set; }
@@ -13,9 +13,18 @@
             Color = color;
             Movements = 0;
         }
+
         public void IncrementMoves()
         {
             Movements++;
         }
+
+        // Testa se as possíveis posições permitem o movimenta (vazia ou contém peça inimiga)
+        public bool CanMove(Position position)
+        {
+            Piece piece = Board.GetPiece(position);
+            return piece == null || piece.Color != this.Color;
+        }
+        public abstract bool[,] PossibleMoves();
     }
 }
