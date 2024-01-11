@@ -1,4 +1,4 @@
-﻿using ChessBoard;
+﻿using GameBoard;
 using System;
 
 namespace xadrez_console
