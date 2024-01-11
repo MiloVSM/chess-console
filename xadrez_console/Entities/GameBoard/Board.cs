@@ -7,22 +7,22 @@
         public int Columns { get; set; }
 
         // Matriz de peças
-        private ChessPiece[,] pieces;
+        private Piece[,] pieces;
 
         public Board(int rows, int columns)
         {
             Rows = rows;
             Columns = columns;
-            pieces = new ChessPiece[rows, columns];
+            pieces = new Piece[rows, columns];
         }
 
-        public ChessPiece GetPiece(int row, int column)
+        public Piece GetPiece(int row, int column)
         {
             return pieces[row, column];
         }
 
         // Método para posicionar peças
-        public void PositionPiece(ChessPiece piece, Position position)
+        public void PositionPiece(Piece piece, Position position)
         {
             pieces[position.Row, position.Column] = piece;
             piece.Position = position;
