@@ -20,5 +20,12 @@
         {
             return pieces[row, column];
         }
+
+        // Método para posicionar peças
+        public void PositionPiece(ChessPiece piece, Position position)
+        {
+            pieces[position.Row, position.Column] = piece;
+            piece.Position = position;
+        }
     }
 }
