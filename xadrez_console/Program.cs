@@ -13,58 +13,56 @@ namespace xadrez_console
             Console.BackgroundColor = ConsoleColor.Black;
 
             // Game Loop
-            try
-            {
-                ChessMatch chessMatch = new ChessMatch();
+            ChessMatch chessMatch = new ChessMatch();
 
-                // Gameloop
-                while (!chessMatch.GameOver)
+            // Gameloop
+            while (!chessMatch.GameOver)
+            {
+                try
                 {
-                    try
-                    {
-                        Console.Clear();
-                        Screen.PrintBoard(chessMatch.ChessBoard);
-                        Console.WriteLine();
-                        Console.WriteLine("Turno: " + chessMatch.Turn);
-                        Console.WriteLine("Aguardando jogada: " + chessMatch.TranslateColor());
+                    Console.Clear();
+                    Screen.PrintBoard(chessMatch.ChessBoard);
+                    Console.WriteLine();
+                    Console.WriteLine("Turno: " + chessMatch.Turn);
+                    Console.WriteLine("Aguardando jogada: " + chessMatch.TranslateColor());
 
-                        Console.WriteLine();
-                        Console.Write("Origem: ");
-                        Position origin = Screen.ReadCoordinates().ToPosition();
-                        chessMatch.OriginValidation(origin);
+                    Console.WriteLine();
+                    Console.Write("Origem: ");
+                    Position origin = Screen.ReadCoordinates().ToPosition();
+                    chessMatch.OriginValidation(origin);
 
-                        Console.WriteLine();
-                        bool[,] possiblePositions = chessMatch.ChessBoard.GetPiece(origin).PossibleMoves();
+                    Console.WriteLine();
+                    bool[,] possiblePositions = chessMatch.ChessBoard.GetPiece(origin).PossibleMoves();
 
-                        Console.Clear();
-                        Screen.PrintBoard(chessMatch.ChessBoard, possiblePositions);
+                    Console.Clear();
+                    Screen.PrintBoard(chessMatch.ChessBoard, possiblePositions);
 
-                        Console.WriteLine();
-                        Console.WriteLine("Turno: " + chessMatch.Turn);
-                        Console.WriteLine("Aguardando jogada: " + chessMatch.TranslateColor());
-                        Console.Write("Destino: ");
-                        Position destination = Screen.ReadCoordinates().ToPosition();
+                    Console.WriteLine();
+                    Console.WriteLine("Turno: " + chessMatch.Turn);
+                    Console.WriteLine("Aguardando jogada: " + chessMatch.TranslateColor());
+                    Console.WriteLine();
+                    Console.Write("Destino: ");
+                    Position destination = Screen.ReadCoordinates().ToPosition();
+                    chessMatch.DestinationValidation(origin, destination);
 
-                        chessMatch.ExecutePlayerMove(origin, destination);
-                    }
-                    catch (BoardException e)
-                    {
-                        Console.WriteLine(e.Message);
-                        Console.ReadLine();
-                    }
-                    catch (PositionException e)
-                    {
-                        Console.WriteLine(e.Message);
-                        Console.ReadLine();
-                    }
+                    chessMatch.ExecutePlayerMove(origin, destination);
                 }
-
+                catch (BoardException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.ReadLine();
+                }
+                catch (PositionException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.ReadLine();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("ERRO INESPERADO: " + e.Message + " Tente Novamene!");
+                    Console.ReadLine();
+                }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine("ERRO INESPERADO: " + e.Message);
-            }
-            Console.ReadLine();
         }
     }
 }

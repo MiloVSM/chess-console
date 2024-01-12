@@ -49,6 +49,19 @@ namespace Chess
             }
         }
 
+        // Verifica se a posição de destino é válida
+        public void DestinationValidation(Position origin, Position destination)
+        {
+            if (!ChessBoard.PositionIsValid(destination))
+            {
+                throw new PositionException("Posição de Destino Inválida! Tente Novamente!");
+            }
+            if (!ChessBoard.GetPiece(origin).CanMoveTo(destination))
+            {
+                throw new PositionException("Posição de Destino Inválida! Tente Novamente!");
+            }
+        }
+
         private void switchPlayer()
         {
             if (CurrentPlayer == Color.White)
@@ -77,9 +90,9 @@ namespace Chess
 
         public void InitializePieces()
         {
-            ChessBoard.PositionPiece(new King(ChessBoard, Color.Black), new ChessCoordinates('c', 7).ToPosition());
-            ChessBoard.PositionPiece(new King(ChessBoard, Color.White), new ChessCoordinates('c', 1).ToPosition());
-            ChessBoard.PositionPiece(new Rook(ChessBoard, Color.White), new ChessCoordinates('d', 4).ToPosition());
+            ChessBoard.PositionPiece(new Pawn(ChessBoard, Color.Black), new ChessCoordinates('d', 6).ToPosition());
+            ChessBoard.PositionPiece(new Pawn(ChessBoard, Color.White), new ChessCoordinates('c', 4).ToPosition());
+            ChessBoard.PositionPiece(new Queen(ChessBoard, Color.White), new ChessCoordinates('d', 4).ToPosition());
 
         }
 

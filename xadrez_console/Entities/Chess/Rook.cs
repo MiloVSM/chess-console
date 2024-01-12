@@ -11,15 +11,15 @@ namespace Chess
         // Lógica de movimentos possíveis da Torre
         public override bool[,] PossibleMoves()
         {
-            bool[,] matrix = new bool[Board.Rows, Board.Columns]; // Corrigindo a ordem das dimensões da matriz
+            bool[,] matrix = new bool[Board.Rows, Board.Columns]; 
             Position pos = new Position(0, 0);
 
             // Posição Norte (acima)
-            pos.DefineValues(Position.Row - 1, Position.Column); // Corrigindo o acesso à propriedade Position
-            while (Board.PositionIsValid(pos) && CanMove(pos)) // Corrigindo a condição do loop
+            pos.DefineValues(Position.Row - 1, Position.Column); 
+            while (Board.PositionIsValid(pos) && CanMove(pos)) 
             {
                 matrix[pos.Row, pos.Column] = true;
-                if (Board.GetPiece(pos) != null && Board.GetPiece(pos).Color != this.Color) // Corrigindo a condição de parada
+                if (Board.GetPiece(pos) != null && Board.GetPiece(pos).Color != this.Color) 
                 {
                     break;
                 }

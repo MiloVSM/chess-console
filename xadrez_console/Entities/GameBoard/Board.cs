@@ -16,7 +16,7 @@
             Columns = columns;
             pieces = new Piece[rows, columns];
         }
-        
+
         // Método para posição
         public Piece GetPiece(int row, int column)
         {
@@ -39,12 +39,13 @@
         // Método para posicionar peças
         public void PositionPiece(Piece piece, Position position)
         {
-            if (PositionOccupied(position))
-            {
-                throw new BoardException("Já existe uma peça nessa posição!");
-            }
-            pieces[position.Row, position.Column] = piece;
-            piece.Position = position;
+                ValidatePosition(position);
+                if (PositionOccupied(position))
+                {
+                    throw new BoardException("Já existe uma peça nessa posição!");
+                }
+                pieces[position.Row, position.Column] = piece;
+                piece.Position = position;
         }
 
         // Método para retirar a peça do tabuleiro
@@ -69,7 +70,7 @@
             return true;
         }
 
-        public void ValidatePosition (Position position)
+        public void ValidatePosition(Position position)
         {
             if (!PositionIsValid(position))
             {
