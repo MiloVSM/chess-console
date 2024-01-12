@@ -19,6 +19,11 @@
             Movements++;
         }
 
+        public void DecrementMoves()
+        {
+            Movements--;
+        }
+
         // Testa se as possíveis posições permitem o movimento (vazia ou contém peça inimiga)
         public virtual bool CanMove(Position position)
         {

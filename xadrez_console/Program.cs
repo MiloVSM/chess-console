@@ -32,7 +32,7 @@ namespace xadrez_console
                     bool[,] possiblePositions = chessMatch.ChessBoard.GetPiece(origin).PossibleMoves();
 
                     Console.Clear();
-                    Screen.PrintBoard(chessMatch.ChessBoard, possiblePositions);
+                    Screen.PrintBoard(chessMatch.ChessBoard, possiblePositions, chessMatch);
 
                     Console.WriteLine();
                     Console.WriteLine("Turno: " + chessMatch.Turn);
@@ -52,11 +52,6 @@ namespace xadrez_console
                 catch (PositionException e)
                 {
                     Console.WriteLine(e.Message);
-                    Console.ReadLine();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("ERRO INESPERADO: " + e.Message + " Tente Novamene!");
                     Console.ReadLine();
                 }
             }

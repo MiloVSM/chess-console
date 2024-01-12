@@ -19,7 +19,7 @@ namespace Chess
             if (Board.PositionIsValid(pos) && CanMove(pos))
             {
                 matrix[pos.Row, pos.Column] = true;
-            }
+            }   
             // Posição Nordeste (⬔)
             pos.DefineValues(Position.Row - 1, Position.Column +1);
             if (Board.PositionIsValid(pos) && CanMove(pos))

@@ -1,5 +1,6 @@
 ﻿using GameBoard;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.ConstrainedExecution;
 
 namespace Chess
 {
@@ -11,6 +12,8 @@ namespace Chess
         public bool GameOver { get; private set; }
         private HashSet<Piece> Pieces = new HashSet<Piece>();
         private HashSet<Piece> CollectedPieces = new HashSet<Piece>();
+        public bool InCheck { get; private set; }
+        public Piece? CheckedKing { get; private set; }
 
         public ChessMatch()
         {
@@ -18,11 +21,13 @@ namespace Chess
             Turn = 1;
             CurrentPlayer = Color.White;
             GameOver = false;
+            InCheck = false;
+            CheckedKing = null;
             InitializePieces();
         }
 
         // Move a peça selecionada e remove as peças capturadas
-        public void MovePiece(Position origin, Position destination)
+        public Piece MovePiece(Position origin, Position destination)
         {
             Piece p = ChessBoard.RemovePiece(origin);
             p.IncrementMoves();
@@ -32,14 +37,44 @@ namespace Chess
             {
                 CollectedPieces.Add(capturedPiece);
             }
+            return capturedPiece;
         }
 
         // Executa o movimento do jogador
         public void ExecutePlayerMove(Position origin, Position destination)
         {
-            MovePiece(origin, destination);
+            Piece capturedPiece = MovePiece(origin, destination);
+
+            if (IsInCheck(CurrentPlayer))
+            {
+                UndoPlayerMove(origin, destination, capturedPiece);
+                throw new BoardException("Você não pode se colocar em xeque! Faça outro movimento!");
+            }
+            if (IsInCheck(OpposingPlayer(CurrentPlayer)))
+            {
+                InCheck = true;
+                CheckedKing = GetKing(OpposingPlayer(CurrentPlayer));
+            }
+            else
+            {
+                InCheck = false;
+                CheckedKing = null;
+            }
+
             Turn++;
             switchPlayer();
+        }
+
+        public void UndoPlayerMove(Position origin, Position destination, Piece capturedPiece)
+        {
+            Piece p = ChessBoard.RemovePiece(destination);
+            p.DecrementMoves();
+            if (capturedPiece != null)
+            {
+                ChessBoard.PositionPiece(capturedPiece, destination);
+                CollectedPieces.Remove(capturedPiece);
+            }
+            ChessBoard.PositionPiece(p, origin);
         }
 
         // Verifica se a posição de origem é válida
@@ -83,6 +118,48 @@ namespace Chess
             {
                 CurrentPlayer = Color.White;
             }
+        }
+
+        private Color OpposingPlayer(Color color)
+        {
+            if (color == Color.White)
+            {
+                return Color.Black;
+            }
+            else
+            {
+                return Color.White;
+            }
+        }
+
+        public Piece GetKing(Color color)
+        {
+            foreach (Piece p in InGamePieces(color))
+            {
+                if (p is King)
+                {
+                    return p;
+                }
+            }
+            return null;
+        }
+
+        private bool IsInCheck(Color color)
+        {
+            Piece K = GetKing(color);
+            if (K == null)
+            {
+                throw new BoardException("Não tem rei da cor " + TranslateColor() + " no tabuleiro!");
+            }
+            foreach (Piece p in InGamePieces(OpposingPlayer(color)))
+            {
+                bool[,] matrix = p.PossibleMoves();
+                if (matrix[K.Position.Row, K.Position.Column])
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // Traduz a cor das peças para pt-br
@@ -134,25 +211,10 @@ namespace Chess
         }
         public void InitializePieces()
         {
-            AddNewPiece('a', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('b', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('c', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('d', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('e', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('f', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('g', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('h', 2, new Pawn(ChessBoard, Color.White));
-
-
-            AddNewPiece('a', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('b', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('c', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('d', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('e', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('f', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('g', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('h', 7, new Pawn(ChessBoard, Color.Black));
-
+            AddNewPiece('a', 1, new King(ChessBoard, Color.White));
+            AddNewPiece('a', 2, new Rook(ChessBoard, Color.White));
+            AddNewPiece('b', 8, new King(ChessBoard, Color.Black));
+            AddNewPiece('a', 8, new Rook(ChessBoard, Color.Black));
         }
 
     }
