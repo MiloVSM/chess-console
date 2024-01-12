@@ -19,7 +19,7 @@ namespace Chess
             while (Board.PositionIsValid(pos) && CanMove(pos))
             {
                 matrix[pos.Row, pos.Column] = true;
-                if (Board.GetPiece(pos) != null && Board.GetPiece(pos).Color != this.Color) // Corrigindo a condição de parada
+                if (Board.GetPiece(pos) != null && Board.GetPiece(pos).Color != this.Color) 
                 {
                     break;
                 }
@@ -32,7 +32,7 @@ namespace Chess
             while (Board.PositionIsValid(pos) && CanMove(pos))
             {
                 matrix[pos.Row, pos.Column] = true;
-                if (Board.GetPiece(pos) != null && Board.GetPiece(pos).Color != this.Color) // Corrigindo a condição de parada
+                if (Board.GetPiece(pos) != null && Board.GetPiece(pos).Color != this.Color) 
                 {
                     break;
                 }
@@ -45,7 +45,7 @@ namespace Chess
             while (Board.PositionIsValid(pos) && CanMove(pos))
             {
                 matrix[pos.Row, pos.Column] = true;
-                if (Board.GetPiece(pos) != null && Board.GetPiece(pos).Color != this.Color) // Corrigindo a condição de parada
+                if (Board.GetPiece(pos) != null && Board.GetPiece(pos).Color != this.Color) 
                 {
                     break;
                 }
@@ -58,7 +58,7 @@ namespace Chess
             while (Board.PositionIsValid(pos) && CanMove(pos))
             {
                 matrix[pos.Row, pos.Column] = true;
-                if (Board.GetPiece(pos) != null && Board.GetPiece(pos).Color != this.Color) // Corrigindo a condição de parada
+                if (Board.GetPiece(pos) != null && Board.GetPiece(pos).Color != this.Color) 
                 {
                     break;
                 }

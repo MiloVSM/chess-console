@@ -1,11 +1,48 @@
 ﻿using Chess;
 using GameBoard;
-using System.Reflection.PortableExecutable;
 
 namespace xadrez_console
 {
     class Screen
     {
+
+        public static void PrintMatch(ChessMatch chessMatch)
+        {
+            PrintBoard(chessMatch.ChessBoard);
+            Console.WriteLine();
+            PrintCapturedPieces(chessMatch);
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Turno: " + chessMatch.Turn);
+            Console.WriteLine("Aguardando jogada: " + chessMatch.TranslateColor());
+        }
+
+        public static void PrintCapturedPieces(ChessMatch chessMatch)
+        {
+            Console.WriteLine("Peças Capturadas: ");
+            Console.Write("Brancas: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            PrintCollection(chessMatch.CapturedPieces(Color.White));
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("Pretas: ");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            PrintCollection(chessMatch.CapturedPieces(Color.Black));
+            Console.ForegroundColor = ConsoleColor.White;
+
+        }
+
+        public static void PrintCollection(HashSet<Piece> collection)
+        {
+            Console.Write("[ ");
+            foreach (Piece p in collection)
+            {
+                Console.Write(p + " ");
+            }
+            Console.Write(" ]");
+        }
+
+
         // Imprimi o tabuleiro no console
         public static void PrintBoard(Board board)
         {

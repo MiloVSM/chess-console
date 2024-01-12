@@ -21,10 +21,7 @@ namespace xadrez_console
                 try
                 {
                     Console.Clear();
-                    Screen.PrintBoard(chessMatch.ChessBoard);
-                    Console.WriteLine();
-                    Console.WriteLine("Turno: " + chessMatch.Turn);
-                    Console.WriteLine("Aguardando jogada: " + chessMatch.TranslateColor());
+                    Screen.PrintMatch(chessMatch);
 
                     Console.WriteLine();
                     Console.Write("Origem: ");
