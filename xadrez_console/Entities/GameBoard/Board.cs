@@ -26,6 +26,7 @@
         // Sobrecarga utilizando a classe Position como argumento
         public Piece GetPiece(Position position)
         {
+            ValidatePosition(position);
             return pieces[position.Row, position.Column];
         }
 
@@ -72,7 +73,7 @@
         {
             if (!PositionIsValid(position))
             {
-                throw new BoardException("Posição Inválida!");
+                throw new BoardException("Posição Inválida! Tente Novamente!");
             }
         }
     }

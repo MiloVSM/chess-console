@@ -19,12 +19,31 @@
             Movements++;
         }
 
-        // Testa se as possíveis posições permitem o movimenta (vazia ou contém peça inimiga)
+        // Testa se as possíveis posições permitem o movimento (vazia ou contém peça inimiga)
         public bool CanMove(Position position)
         {
             Piece piece = Board.GetPiece(position);
             return piece == null || piece.Color != this.Color;
         }
+
+
+        // Verifica se a peça selecionada possui movimentos possíveis (peça travada em todas as direções)
+        public bool PossibleMovesExists()
+        {
+            bool[,] matrix = PossibleMoves();
+            for (int i = 0; i < Board.Rows; i++)
+            {
+                for (int j = 0; j < Board.Columns; j++)
+                {
+                    if (matrix[i, j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public abstract bool[,] PossibleMoves();
     }
 }
