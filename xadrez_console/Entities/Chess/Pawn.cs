@@ -15,6 +15,7 @@ namespace Chess
             return piece != null && piece.Color != this.Color;
         }
 
+        // Determina a lógica de movimento de peão e retorna seus movimentos possíveis
         public override bool[,] PossibleMoves()
         {
             bool[,] matrix = new bool[Board.Columns, Board.Rows];

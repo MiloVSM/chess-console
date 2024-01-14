@@ -1,6 +1,4 @@
 ﻿using GameBoard;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.ConstrainedExecution;
 
 namespace Chess
 {
@@ -72,6 +70,7 @@ namespace Chess
             }
         }
 
+        // Desfaz a última jogada e retorna as peças para suas posições originais
         public void UndoPlayerMove(Position origin, Position destination, Piece capturedPiece)
         {
             Piece p = ChessBoard.RemovePiece(destination);
@@ -127,6 +126,7 @@ namespace Chess
             }
         }
 
+        // Retorna a cor adversária
         private Color OpposingPlayer(Color color)
         {
             if (color == Color.White)
@@ -139,6 +139,7 @@ namespace Chess
             }
         }
 
+        // Retorna o rei de determinada cor
         public Piece GetKing(Color color)
         {
             foreach (Piece p in InGamePieces(color))
@@ -151,6 +152,7 @@ namespace Chess
             return null;
         }
 
+        // Verifica se o Rei de determinada cor está em check
         private bool IsInCheck(Color color)
         {
             Piece K = GetKing(color);
@@ -169,6 +171,7 @@ namespace Chess
             return false;
         }
 
+        // Verifica se determinada cor está em checkmate e termina o jogo caso o retorno seja verdadeiro
         public bool Checkmate(Color color)
         {
             if (!IsInCheck(color))
@@ -242,11 +245,14 @@ namespace Chess
             return tmp;
         }
 
+        // Instancia uma nova peça e a insere no tabuleiro
         public void AddNewPiece(char column, int row, Piece piece)
         {
             ChessBoard.PositionPiece(piece, new ChessCoordinates(column, row).ToPosition());
             Pieces.Add(piece);
         }
+
+        // Inicializa as peças no ínicio da partida
         public void InitializePieces()
         {
             AddNewPiece('c', 1, new Rook(ChessBoard, Color.White));

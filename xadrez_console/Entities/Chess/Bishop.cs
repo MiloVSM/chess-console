@@ -1,5 +1,4 @@
-﻿using System;
-using GameBoard;
+﻿using GameBoard;
 
 namespace Chess
 {
@@ -9,6 +8,7 @@ namespace Chess
         {
         }
 
+        // Lógica de movimentação do Bispo
         public override bool[,] PossibleMoves()
         {
             bool[,] matrix = new bool[Board.Columns, Board.Rows];

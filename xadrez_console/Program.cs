@@ -12,7 +12,7 @@ namespace xadrez_console
             // Console.OutputEncoding = System.Text.Encoding.Unicode; //( Habilita o uso de caracteres Unicode   )
             Console.BackgroundColor = ConsoleColor.Black;
 
-            // Game Loop
+            // Instancia o objeto da partida de xadrez
             ChessMatch chessMatch = new ChessMatch();
 
             // Gameloop

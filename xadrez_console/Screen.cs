@@ -8,6 +8,7 @@ namespace xadrez_console
         private static ConsoleColor bgColor = Console.BackgroundColor;
         private static ConsoleColor fgColor = Console.ForegroundColor;
 
+        // Imprime a partida no console
         public static void PrintMatch(ChessMatch chessMatch)
         {
             PrintBoard(chessMatch.ChessBoard, chessMatch);
@@ -35,6 +36,7 @@ namespace xadrez_console
             }
         }
 
+        // Imprime as peças capturadas de cada cor
         public static void PrintCapturedPieces(ChessMatch chessMatch)
         {
             Console.WriteLine("Peças Capturadas: ");
@@ -50,6 +52,7 @@ namespace xadrez_console
 
         }
 
+        // Imprime um determinado conjunto de peças
         public static void PrintCollection(HashSet<Piece> collection)
         {
             Console.Write("[ ");

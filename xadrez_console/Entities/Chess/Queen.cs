@@ -8,6 +8,7 @@ namespace Chess
         {
         }
 
+        // Lógica de movimentos da rainha
         public override bool[,] PossibleMoves()
         {
             bool[,] matrix = new bool[Board.Columns, Board.Rows];

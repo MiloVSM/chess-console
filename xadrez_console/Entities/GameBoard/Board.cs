@@ -61,6 +61,7 @@
             return aux;
         }
 
+        // Testa se a posição está dentro dos limites do tabuleiro
         public bool PositionIsValid(Position position)
         {
             if (position.Row < 0 || position.Row >= Rows || position.Column < 0 || position.Column >= Columns)
@@ -70,6 +71,7 @@
             return true;
         }
 
+        // Lança uma excessão caso a posição seja inválida
         public void ValidatePosition(Position position)
         {
             if (!PositionIsValid(position))

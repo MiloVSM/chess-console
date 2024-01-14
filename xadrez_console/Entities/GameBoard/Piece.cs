@@ -14,11 +14,13 @@
             Movements = 0;
         }
 
+        // Incrementa o númmero de movimentos da peça
         public void IncrementMoves()
         {
             Movements++;
         }
 
+        // Decrementa o númmero de movimentos da peça
         public void DecrementMoves()
         {
             Movements--;
