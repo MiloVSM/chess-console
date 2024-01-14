@@ -61,8 +61,15 @@ namespace Chess
                 CheckedKing = null;
             }
 
-            Turn++;
-            switchPlayer();
+            if (Checkmate(OpposingPlayer(CurrentPlayer)))
+            {
+                GameOver = true;
+            }
+            else
+            {
+                Turn++;
+                switchPlayer();
+            }
         }
 
         public void UndoPlayerMove(Position origin, Position destination, Piece capturedPiece)
@@ -101,7 +108,7 @@ namespace Chess
             {
                 throw new PositionException("Posição de Destino Inválida! Tente Novamente!");
             }
-            if (!ChessBoard.GetPiece(origin).CanMoveTo(destination))
+            if (!ChessBoard.GetPiece(origin).MoveIsPossible(destination))
             {
                 throw new PositionException("Posição de Destino Inválida! Tente Novamente!");
             }
@@ -162,6 +169,37 @@ namespace Chess
             return false;
         }
 
+        public bool Checkmate(Color color)
+        {
+            if (!IsInCheck(color))
+            {
+                return false;
+            }
+            foreach (Piece p in InGamePieces(color))
+            {
+                bool[,] matrix = p.PossibleMoves();
+                for (int i = 0; i < ChessBoard.Rows; i++)
+                {
+                    for (int j = 0; j < ChessBoard.Columns; j++)
+                    {
+                        if (matrix[i, j])
+                        {
+                            Position origin = p.Position;
+                            Position destination = new Position(i, j);
+                            Piece capturedPiece = MovePiece(origin, destination);
+                            bool stillInCheck = IsInCheck(color);
+                            UndoPlayerMove(origin, destination, capturedPiece);
+                            if (!stillInCheck)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         // Traduz a cor das peças para pt-br
         public string TranslateColor()
         {
@@ -211,10 +249,13 @@ namespace Chess
         }
         public void InitializePieces()
         {
-            AddNewPiece('a', 1, new King(ChessBoard, Color.White));
-            AddNewPiece('a', 2, new Rook(ChessBoard, Color.White));
-            AddNewPiece('b', 8, new King(ChessBoard, Color.Black));
-            AddNewPiece('a', 8, new Rook(ChessBoard, Color.Black));
+            AddNewPiece('c', 1, new Rook(ChessBoard, Color.White));
+            AddNewPiece('d', 1, new King(ChessBoard, Color.White));
+            AddNewPiece('h', 7, new Rook(ChessBoard, Color.White));
+
+
+            AddNewPiece('a', 8, new King(ChessBoard, Color.Black));
+            AddNewPiece('b', 8, new Rook(ChessBoard, Color.Black));
         }
 
     }

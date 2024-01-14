@@ -31,7 +31,7 @@
             return piece == null || piece.Color != this.Color;
         }
 
-        public bool CanMoveTo(Position position)
+        public bool MoveIsPossible(Position position)
         {
             return PossibleMoves()[position.Row, position.Column];
         }

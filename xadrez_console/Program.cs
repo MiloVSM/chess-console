@@ -54,6 +54,9 @@ namespace xadrez_console
                     Console.WriteLine(e.Message);
                     Console.ReadLine();
                 }
+
+                Console.Clear();
+                Screen.PrintMatch(chessMatch);
             }
         }
     }

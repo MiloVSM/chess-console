@@ -16,13 +16,22 @@ namespace xadrez_console
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("Turno: " + chessMatch.Turn);
-            Console.WriteLine("Aguardando jogada: " + chessMatch.TranslateColor());
-            if (chessMatch.InCheck)
+
+            if (!chessMatch.GameOver)
             {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.DarkRed;               
-                Console.WriteLine("XEQUE! O REI DAS " + chessMatch.TranslateColor().ToUpper() + " ESTÁ EM XEQUE");
-                Console.ForegroundColor = fgColor;
+                Console.WriteLine("Aguardando jogada: " + chessMatch.TranslateColor());
+                if (chessMatch.InCheck)
+                {
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("XEQUE! O REI DAS " + chessMatch.TranslateColor().ToUpper() + " ESTÁ EM XEQUE");
+                    Console.ForegroundColor = fgColor;
+                }
+            }
+            else
+            {
+                Console.WriteLine("XEQUEMATE!");
+                Console.WriteLine("Vencedor: " + chessMatch.TranslateColor());
             }
         }
 
