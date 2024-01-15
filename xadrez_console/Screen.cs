@@ -18,6 +18,15 @@ namespace xadrez_console
             Console.WriteLine();
             Console.WriteLine("Turno: " + chessMatch.Turn);
 
+            if (chessMatch.DidSpecialMove != null)
+            {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("JOGADA ESPECIAL: " + chessMatch.DidSpecialMove.ToString());
+                Console.ForegroundColor = fgColor;
+                Console.WriteLine();
+            }
+
             if (!chessMatch.GameOver)
             {
                 Console.WriteLine("Aguardando jogada: " + chessMatch.TranslateColor());

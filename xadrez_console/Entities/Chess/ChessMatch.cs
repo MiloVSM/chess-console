@@ -12,6 +12,9 @@ namespace Chess
         private HashSet<Piece> CollectedPieces = new HashSet<Piece>();
         public bool InCheck { get; private set; }
         public Piece? CheckedKing { get; private set; }
+        public Piece? EnPassantRisk { get; private set; }
+        public string ?DidSpecialMove { get; private set; }
+
 
         public ChessMatch()
         {
@@ -21,6 +24,8 @@ namespace Chess
             GameOver = false;
             InCheck = false;
             CheckedKing = null;
+            EnPassantRisk = null;
+            DidSpecialMove = null;
             InitializePieces();
         }
 
@@ -35,6 +40,7 @@ namespace Chess
             {
                 CollectedPieces.Add(capturedPiece);
             }
+            DidSpecialMove = null;
 
             // Jogada Especial: Roque Pequeno
             // Kingslide castling
@@ -45,6 +51,7 @@ namespace Chess
                 Piece rookCastle = ChessBoard.RemovePiece(rookOrigin);
                 rookCastle.IncrementMoves();
                 ChessBoard.PositionPiece(rookCastle, rookDestination);
+                DidSpecialMove = "Roque Pequeno!";
 
             }
 
@@ -57,8 +64,30 @@ namespace Chess
                 Piece rookCastle = ChessBoard.RemovePiece(rookOrigin);
                 rookCastle.IncrementMoves();
                 ChessBoard.PositionPiece(rookCastle, rookDestination);
+                DidSpecialMove = "Roque Grande!";
 
             }
+
+            // Jogada Especial En passant
+            if (p is Pawn)
+            {
+                if (origin.Column != destination.Column && capturedPiece == null)
+                {
+                    Position PawnPos;
+                    if (p.Color == Color.White)
+                    {
+                        PawnPos = new Position(destination.Row + 1, destination.Column);
+                    }
+                    else
+                    {
+                        PawnPos = new Position(destination.Row - 1, destination.Column);
+                    }
+                    capturedPiece = ChessBoard.RemovePiece(PawnPos);
+                    CollectedPieces.Add(capturedPiece);
+                    DidSpecialMove = "En Passant!";
+                }
+            }
+
             return capturedPiece;
         }
 
@@ -92,6 +121,19 @@ namespace Chess
                 Turn++;
                 switchPlayer();
             }
+
+            Piece p = ChessBoard.GetPiece(destination);
+
+            // Jogada Especial: En Passant
+            if (p is Pawn && (destination.Row == origin.Row + 2 || destination.Row == origin.Row - 2))
+            {
+                EnPassantRisk = p;
+            }
+            else
+            {
+                EnPassantRisk = null;
+            }
+
         }
 
         // Desfaz a última jogada e retorna as peças para suas posições originais
@@ -127,6 +169,25 @@ namespace Chess
                 ChessBoard.PositionPiece(rookCastle, rookOrigin);
 
             }
+
+            if (p is Pawn)
+            {
+                if (destination.Column != origin.Column && capturedPiece == EnPassantRisk)
+                {
+                    Piece pawn = ChessBoard.RemovePiece(destination);
+                    Position pawnPos;
+                    if (p.Color == Color.White)
+                    {
+                        pawnPos = new Position(3, destination.Column);
+                    }
+                    else
+                    {
+                        pawnPos = new Position(4, destination.Column);
+                    }
+                    ChessBoard.PositionPiece(pawn, pawnPos);
+                }
+            }
+
         }
 
         // Verifica se a posição de origem é válida
@@ -301,16 +362,16 @@ namespace Chess
         // Inicializa as peças no ínicio da partida
         public void InitializePieces()
         {
-            
 
-            AddNewPiece('a', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('b', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('c', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('d', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('e', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('f', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('g', 2, new Pawn(ChessBoard, Color.White));
-            AddNewPiece('h', 2, new Pawn(ChessBoard, Color.White));
+
+            AddNewPiece('a', 2, new Pawn(ChessBoard, Color.White, this));
+            AddNewPiece('b', 2, new Pawn(ChessBoard, Color.White, this));
+            AddNewPiece('c', 2, new Pawn(ChessBoard, Color.White, this));
+            AddNewPiece('d', 2, new Pawn(ChessBoard, Color.White, this));
+            AddNewPiece('e', 2, new Pawn(ChessBoard, Color.White, this));
+            AddNewPiece('f', 2, new Pawn(ChessBoard, Color.White, this));
+            AddNewPiece('g', 2, new Pawn(ChessBoard, Color.White, this));
+            AddNewPiece('h', 2, new Pawn(ChessBoard, Color.White, this));
 
             AddNewPiece('a', 1, new Rook(ChessBoard, Color.White));
             AddNewPiece('b', 1, new Knight(ChessBoard, Color.White));
@@ -322,14 +383,14 @@ namespace Chess
             AddNewPiece('h', 1, new Rook(ChessBoard, Color.White));
 
 
-            AddNewPiece('a', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('b', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('c', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('d', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('e', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('f', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('g', 7, new Pawn(ChessBoard, Color.Black));
-            AddNewPiece('h', 7, new Pawn(ChessBoard, Color.Black));
+            AddNewPiece('a', 7, new Pawn(ChessBoard, Color.Black, this));
+            AddNewPiece('b', 7, new Pawn(ChessBoard, Color.Black, this));
+            AddNewPiece('c', 7, new Pawn(ChessBoard, Color.Black, this));
+            AddNewPiece('d', 7, new Pawn(ChessBoard, Color.Black, this));
+            AddNewPiece('e', 7, new Pawn(ChessBoard, Color.Black, this));
+            AddNewPiece('f', 7, new Pawn(ChessBoard, Color.Black, this));
+            AddNewPiece('g', 7, new Pawn(ChessBoard, Color.Black, this));
+            AddNewPiece('h', 7, new Pawn(ChessBoard, Color.Black, this));
 
             AddNewPiece('a', 8, new Rook(ChessBoard, Color.Black));
             AddNewPiece('b', 8, new Knight(ChessBoard, Color.Black));
