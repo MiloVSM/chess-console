@@ -55,6 +55,11 @@ namespace xadrez_console
                         Console.WriteLine(e.Message);
                         Console.ReadLine();
                     }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("ERRO INESPERADO: " + e.Message);
+                        Console.ReadLine();
+                    }
 
                     Console.Clear();
                     Screen.PrintMatch(chessMatch);

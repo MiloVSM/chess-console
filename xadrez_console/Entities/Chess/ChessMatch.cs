@@ -1,4 +1,5 @@
 ﻿using GameBoard;
+using xadrez_console;
 
 namespace Chess
 {
@@ -101,6 +102,19 @@ namespace Chess
                 UndoPlayerMove(origin, destination, capturedPiece);
                 throw new BoardException("Você não pode se colocar em xeque! Faça outro movimento!");
             }
+
+            Piece p = ChessBoard.GetPiece(destination);
+
+            // Jogada Especial Promocao
+            if (p is Pawn)
+            {
+                if (p.Color == Color.White && destination.Row == 0 || p.Color == Color.Black && destination.Row == 7)
+                {
+                    DidSpecialMove = "Promocao";
+                    PromotionMove(p, destination);
+                }
+            }
+
             if (IsInCheck(OpposingPlayer(CurrentPlayer)))
             {
                 InCheck = true;
@@ -121,8 +135,6 @@ namespace Chess
                 Turn++;
                 switchPlayer();
             }
-
-            Piece p = ChessBoard.GetPiece(destination);
 
             // Jogada Especial: En Passant
             if (p is Pawn && (destination.Row == origin.Row + 2 || destination.Row == origin.Row - 2))
@@ -310,8 +322,38 @@ namespace Chess
             return true;
         }
 
-        // Traduz a cor das peças para pt-br
-        public string TranslateColor()
+        public void PromotionMove(Piece p, Position destination)
+        {
+            Screen.PrintSpecialMove(this);
+            string input = Screen.GetPromotionInput(this);
+            Piece promotion;
+
+            switch (input)
+            {
+                case ("R"):
+                    promotion = new Rook(ChessBoard, p.Color);
+                    break;
+                case ("B"):
+                    promotion = new Bishop(ChessBoard, p.Color);
+                    break;
+                case ("C"):
+                    promotion = new Knight(ChessBoard, p.Color);
+                    break;
+                case ("Q"):
+                    promotion = new Queen(ChessBoard, p.Color);
+                    break;
+                default:
+                    promotion = new Queen(ChessBoard, p.Color);
+                    break;
+            }
+
+            p = ChessBoard.RemovePiece(destination);
+            Pieces.Remove(p);
+            ChessBoard.PositionPiece(promotion, destination);
+            Pieces.Add(promotion);
+        }
+            // Traduz a cor das peças para pt-br
+            public string TranslateColor()
         {
             if (CurrentPlayer == Color.White)
             {

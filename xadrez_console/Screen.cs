@@ -5,8 +5,9 @@ namespace xadrez_console
 {
     class Screen
     {
-        private static ConsoleColor bgColor = Console.BackgroundColor;
-        private static ConsoleColor fgColor = Console.ForegroundColor;
+        public static ConsoleColor bgColor { get; private set; }  = Console.BackgroundColor;
+        public static ConsoleColor fgColor { get; private set; }  = Console.ForegroundColor;
+        public static string LastMove { get; private set; }
 
         // Imprime a partida no console
         public static void PrintMatch(ChessMatch chessMatch)
@@ -17,15 +18,7 @@ namespace xadrez_console
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("Turno: " + chessMatch.Turn);
-
-            if (chessMatch.DidSpecialMove != null)
-            {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("JOGADA ESPECIAL: " + chessMatch.DidSpecialMove.ToString());
-                Console.ForegroundColor = fgColor;
-                Console.WriteLine();
-            }
+            PrintSpecialMove(chessMatch);
 
             if (!chessMatch.GameOver)
             {
@@ -124,6 +117,29 @@ namespace xadrez_console
             Console.BackgroundColor = bgColor;
         }
 
+        public static void PrintSpecialMove(ChessMatch chessMatch)
+        {
+            if (chessMatch.DidSpecialMove != null)
+            {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("JOGADA ESPECIAL: " + chessMatch.DidSpecialMove.ToString());
+                Console.ForegroundColor = fgColor;
+                Console.WriteLine();
+            }
+        }
+        public static string GetPromotionInput(ChessMatch chessMatch)
+        {
+            Console.Write("Deseja promover o peão ");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write(LastMove);
+            Console.ForegroundColor = fgColor;
+            Console.Write(" para qual peça (Q/R/B/C)? ");
+            string input = Console.ReadLine().Trim().ToUpper();
+            return input;
+        }
+
+
         // Lê o input do usuário e converte o string para coordenadas
         public static ChessCoordinates ReadCoordinates()
         {
@@ -131,6 +147,7 @@ namespace xadrez_console
             char column = input[0];
             int row = int.Parse(input[1].ToString());
             ChessCoordinates coords = new ChessCoordinates(column, row);
+            LastMove = input;
             return coords;
         }
 
