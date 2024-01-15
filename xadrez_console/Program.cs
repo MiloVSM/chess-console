@@ -16,47 +16,54 @@ namespace xadrez_console
             ChessMatch chessMatch = new ChessMatch();
 
             // Gameloop
-            while (!chessMatch.GameOver)
-            {
-                try
+            try {
+                while (!chessMatch.GameOver)
                 {
+                    try
+                    {
+                        Console.Clear();
+                        Screen.PrintMatch(chessMatch);
+
+                        Console.WriteLine();
+                        Console.Write("Origem: ");
+                        Position origin = Screen.ReadCoordinates().ToPosition();
+                        chessMatch.OriginValidation(origin);
+
+                        Console.WriteLine();
+                        bool[,] possiblePositions = chessMatch.ChessBoard.GetPiece(origin).PossibleMoves();
+
+                        Console.Clear();
+                        Screen.PrintBoard(chessMatch.ChessBoard, possiblePositions, chessMatch);
+
+                        Console.WriteLine();
+                        Console.WriteLine("Turno: " + chessMatch.Turn);
+                        Console.WriteLine("Aguardando jogada: " + chessMatch.TranslateColor());
+                        Console.WriteLine();
+                        Console.Write("Destino: ");
+                        Position destination = Screen.ReadCoordinates().ToPosition();
+                        chessMatch.DestinationValidation(origin, destination);
+
+                        chessMatch.ExecutePlayerMove(origin, destination);
+                    }
+                    catch (BoardException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
+                    catch (PositionException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
+
                     Console.Clear();
                     Screen.PrintMatch(chessMatch);
-
-                    Console.WriteLine();
-                    Console.Write("Origem: ");
-                    Position origin = Screen.ReadCoordinates().ToPosition();
-                    chessMatch.OriginValidation(origin);
-
-                    Console.WriteLine();
-                    bool[,] possiblePositions = chessMatch.ChessBoard.GetPiece(origin).PossibleMoves();
-
-                    Console.Clear();
-                    Screen.PrintBoard(chessMatch.ChessBoard, possiblePositions, chessMatch);
-
-                    Console.WriteLine();
-                    Console.WriteLine("Turno: " + chessMatch.Turn);
-                    Console.WriteLine("Aguardando jogada: " + chessMatch.TranslateColor());
-                    Console.WriteLine();
-                    Console.Write("Destino: ");
-                    Position destination = Screen.ReadCoordinates().ToPosition();
-                    chessMatch.DestinationValidation(origin, destination);
-
-                    chessMatch.ExecutePlayerMove(origin, destination);
                 }
-                catch (BoardException e)
-                {
-                    Console.WriteLine(e.Message);
-                    Console.ReadLine();
-                }
-                catch (PositionException e)
-                {
-                    Console.WriteLine(e.Message);
-                    Console.ReadLine();
-                }
-
-                Console.Clear();
-                Screen.PrintMatch(chessMatch);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
             }
         }
     }

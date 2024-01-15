@@ -35,6 +35,30 @@ namespace Chess
             {
                 CollectedPieces.Add(capturedPiece);
             }
+
+            // Jogada Especial: Roque Pequeno
+            // Kingslide castling
+            if (p is King && destination.Column == origin.Column + 2)
+            {
+                Position rookOrigin = new Position(origin.Row, origin.Column + 3);
+                Position rookDestination = new Position(origin.Row, origin.Column + 1);
+                Piece rookCastle = ChessBoard.RemovePiece(rookOrigin);
+                rookCastle.IncrementMoves();
+                ChessBoard.PositionPiece(rookCastle, rookDestination);
+
+            }
+
+            // Jogada Especial: Roque grande
+            // Queenslide castling
+            if (p is King && destination.Column == origin.Column - 2)
+            {
+                Position rookOrigin = new Position(origin.Row, origin.Column - 4);
+                Position rookDestination = new Position(origin.Row, origin.Column - 1);
+                Piece rookCastle = ChessBoard.RemovePiece(rookOrigin);
+                rookCastle.IncrementMoves();
+                ChessBoard.PositionPiece(rookCastle, rookDestination);
+
+            }
             return capturedPiece;
         }
 
@@ -81,6 +105,28 @@ namespace Chess
                 CollectedPieces.Remove(capturedPiece);
             }
             ChessBoard.PositionPiece(p, origin);
+
+            // Jogada Especial: Roque pequeno
+            if (p is King && destination.Column == origin.Column + 2)
+            {
+                Position rookOrigin = new Position(origin.Row, origin.Column + 3);
+                Position rookDestination = new Position(origin.Row, origin.Column + 1);
+                Piece rookCastle = ChessBoard.RemovePiece(rookDestination);
+                rookCastle.DecrementMoves();
+                ChessBoard.PositionPiece(rookCastle, rookOrigin);
+
+            }
+
+            // Jogada Especial: Roque Grande
+            if (p is King && destination.Column == origin.Column - 2)
+            {
+                Position rookOrigin = new Position(origin.Row, origin.Column - 4);
+                Position rookDestination = new Position(origin.Row, origin.Column - 1);
+                Piece rookCastle = ChessBoard.RemovePiece(rookDestination);
+                rookCastle.DecrementMoves();
+                ChessBoard.PositionPiece(rookCastle, rookOrigin);
+
+            }
         }
 
         // Verifica se a posição de origem é válida
@@ -255,13 +301,45 @@ namespace Chess
         // Inicializa as peças no ínicio da partida
         public void InitializePieces()
         {
-            AddNewPiece('c', 1, new Rook(ChessBoard, Color.White));
-            AddNewPiece('d', 1, new King(ChessBoard, Color.White));
-            AddNewPiece('h', 7, new Rook(ChessBoard, Color.White));
+            
+
+            AddNewPiece('a', 2, new Pawn(ChessBoard, Color.White));
+            AddNewPiece('b', 2, new Pawn(ChessBoard, Color.White));
+            AddNewPiece('c', 2, new Pawn(ChessBoard, Color.White));
+            AddNewPiece('d', 2, new Pawn(ChessBoard, Color.White));
+            AddNewPiece('e', 2, new Pawn(ChessBoard, Color.White));
+            AddNewPiece('f', 2, new Pawn(ChessBoard, Color.White));
+            AddNewPiece('g', 2, new Pawn(ChessBoard, Color.White));
+            AddNewPiece('h', 2, new Pawn(ChessBoard, Color.White));
+
+            AddNewPiece('a', 1, new Rook(ChessBoard, Color.White));
+            AddNewPiece('b', 1, new Knight(ChessBoard, Color.White));
+            AddNewPiece('c', 1, new Bishop(ChessBoard, Color.White));
+            AddNewPiece('d', 1, new Queen(ChessBoard, Color.White));
+            AddNewPiece('e', 1, new King(ChessBoard, Color.White, this));
+            AddNewPiece('f', 1, new Bishop(ChessBoard, Color.White));
+            AddNewPiece('g', 1, new Knight(ChessBoard, Color.White));
+            AddNewPiece('h', 1, new Rook(ChessBoard, Color.White));
 
 
-            AddNewPiece('a', 8, new King(ChessBoard, Color.Black));
-            AddNewPiece('b', 8, new Rook(ChessBoard, Color.Black));
+            AddNewPiece('a', 7, new Pawn(ChessBoard, Color.Black));
+            AddNewPiece('b', 7, new Pawn(ChessBoard, Color.Black));
+            AddNewPiece('c', 7, new Pawn(ChessBoard, Color.Black));
+            AddNewPiece('d', 7, new Pawn(ChessBoard, Color.Black));
+            AddNewPiece('e', 7, new Pawn(ChessBoard, Color.Black));
+            AddNewPiece('f', 7, new Pawn(ChessBoard, Color.Black));
+            AddNewPiece('g', 7, new Pawn(ChessBoard, Color.Black));
+            AddNewPiece('h', 7, new Pawn(ChessBoard, Color.Black));
+
+            AddNewPiece('a', 8, new Rook(ChessBoard, Color.Black));
+            AddNewPiece('b', 8, new Knight(ChessBoard, Color.Black));
+            AddNewPiece('c', 8, new Bishop(ChessBoard, Color.Black));
+            AddNewPiece('d', 8, new Queen(ChessBoard, Color.Black));
+            AddNewPiece('e', 8, new King(ChessBoard, Color.Black, this));
+            AddNewPiece('f', 8, new Bishop(ChessBoard, Color.Black));
+            AddNewPiece('g', 8, new Knight(ChessBoard, Color.Black));
+            AddNewPiece('h', 8, new Rook(ChessBoard, Color.Black));
+
         }
 
     }
