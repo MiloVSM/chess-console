@@ -1,7 +1,7 @@
-#Aplicação de Xadrez CLI
+# Aplicação de Xadrez CLI
 Console Application de xadrez. Este projeto foi desenvolvido com o íntuito de praticar minhas habilidades e conceitos em Programação Orientada à objetos, a aplicação contém todas as regras e movimentods do xadrez convencional.
 
-##Features
+## Features
 
 - `Funcionalidade básicas do Xadrez`
 - `Preview de movimentos possíveis`
